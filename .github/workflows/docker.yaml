@@ -46,7 +46,7 @@ jobs:
         COSIGN_YES: "true"
       run: |
         cosign sign $APP_DIGEST
-        cosign sign $DB_LOADER_DIGEST
+        # cosign sign $DB_LOADER_DIGEST
         cosign sign $EMAIL_DIGEST
   deploy:
     needs: [build]
@@ -60,8 +60,6 @@ jobs:
       env:
         COSIGN_YES: "true"
       run: |
-        echo "Verifying and running images"
-        echo "Github Repository: ${{ github.repository }}"
         APP_IMAGE=${{ secrets.DOCKER_USERNAME }}/al-app:${{ github.sha }}
         docker pull $APP_IMAGE
         cosign verify --certificate-identity https://github.com/${{ github.repository }}/.github/workflows/docker.yaml@${{ github.ref }} --certificate-oidc-issuer https://token.actions.githubusercontent.com $APP_IMAGE

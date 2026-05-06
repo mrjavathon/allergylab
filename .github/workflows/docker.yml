@@ -60,6 +60,8 @@ jobs:
       env:
         COSIGN_YES: "true"
       run: |
+        echo "Verifying and running images"
+        echo "Github Actor: ${{ github.actor }}"
         APP_IMAGE=${{ secrets.DOCKER_USERNAME }}/al-app:${{ github.sha }}
         docker pull $APP_IMAGE
         cosign verify --certificate-identity https://github.com/${{ github.actor }}/allergylab/.github/workflows/docker.yaml@refs/heads/main --certificate-oidc-issuer https://token.actions.githubusercontent.com $APP_IMAGE
